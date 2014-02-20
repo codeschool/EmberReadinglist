@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Ember Reading List</title>
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <script type="text/x-handlebars">
+    <div class='container'>
+      <h1>Reading List</h1>
+
+      {{outlet}}
+    </div>
+  </script>
+
+  <script type="text/x-handlebars" data-template-name="book">
+    <ol class="breadcrumb">
+      <li>{{#link-to 'books'}}Books{{/link-to}}</li>
+      <li class='active'>{{title}}</li>
+    </ol>
+
+    {{book-details class='row' book=this}}
+  </script>
+
+  <script type="text/x-handlebars" data-template-name="books">
+    <div class='row'>
+      <div class='col-sm-8'>
+        <ul class='list-unstyled'>
+          {{#each books}}
+            {{book-details tag='li' class='row' book=this}}
+          {{/each}}
+        </ul>
+      </div>
+      <div class='col-sm-4'>
+        {{render 'genres' genres}}
+      </div>
+    </div>
+  </script>
+
+  <script type='text/x-handlebars' data-template-name='genres'>
+    <h2>Genres</h2>
+    <ul class='list-unstyled'>
+      {{#each}}
+        <li>{{#link-to 'genre' id class='label label-primary'}}{{name}}{{/link-to}}</li>
+      {{/each}}
+    </ul>
+  </script>
+
+  <script type='text/x-handlebars' data-template-name='genre'>
+    <ol class="breadcrumb">
+      <li>{{#link-to 'books'}}Books{{/link-to}}</li>
+      <li class='active'>{{genre.name}}</li>
+    </ol>
+
+    <div class='row'>
+      <div class='col-sm-8'>
+        <ul class='list-unstyled'>
+          {{#each genre.books}}
+            {{book-details tag='li' class='row' book=this}}
+          {{else}}
+            <li>There are no books in this genre.</li>
+          {{/each}}
+        </ul>
+      </div>
+      <div class='col-sm-4'>
+        {{render 'genres' genres}}
+      </div>
+    </div>
+  </script>
+
+  <script type='text/x-handlebars' data-template-name='components/book-details'>
+    <div class='col-sm-3'>
+      <a {{bind-attr href='book.url'}} target='_blank'>
+        <img {{bind-attr src='book.image'}} />
+      </a>
+      <br/><br/>
+      <p class='text-center'><strong>{{book.rating}}</strong>/5</p>
+      <br/>
+    </div>
+
+    <div class='col-sm-9'>
+      <h3>{{#link-to 'book' book}}{{book.title}}{{/link-to}}</h3>
+      <span>{{book.author}}</span>
+
+      <div>
+        <p>{{book.review}}</p>
+      </div>
+
+      <span>{{#link-to 'genre' book.genre.id class='label label-primary'}}{{book.genre.name}}{{/link-to}}</span>
+    </div>
+  </script>
+
+  <script src="js/libs/jquery-1.10.2.js"></script>
+  <script src="js/libs/handlebars-1.1.2.js"></script>
+  <script src="js/libs/ember-1.4.0.js"></script>
+  <script src="js/libs/ember-data-1.0.0-beta7.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
