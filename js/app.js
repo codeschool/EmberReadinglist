@@ -1,13 +1,12 @@
 var App = Ember.Application.create();
 
 App.Router.map(function() {
-  this.resource('books', { path: '/'});
+  this.resource('index', { path: '/' });
   this.resource('book', { path: '/books/:book_id' });
-
   this.resource('genre', { path: '/genre/:genre_id' });
 });
 
-App.BooksRoute = Ember.Route.extend({
+App.IndexRoute = Ember.Route.extend({
   model: function() {
     return Ember.RSVP.hash({
       books: this.store.findAll('book'),
@@ -19,6 +18,12 @@ App.BooksRoute = Ember.Route.extend({
     controller.set('books', model.books);
   }
 });
+App.IndexController = Ember.Controller.extend({});
+
+App.BooksController = Ember.ArrayController.extend({
+  sortProperties: ['title']
+})
+
 
 App.GenreRoute = Ember.Route.extend({
   model: function(params) {
@@ -42,9 +47,6 @@ App.GenreController = Ember.Controller.extend({
 //   }
 // });
 
-App.BooksController = Ember.ArrayController.extend({
-  sortProperties: ['title']
-})
 
 App.GenresController = Ember.ArrayController.extend({
   sortProperties: ['name']
@@ -95,7 +97,7 @@ App.Book.FIXTURES = [
     title: 'Hyperion',
     author: 'Dan Simmons',
     review: 'Probably my favorite science fiction book (and series) I\'ve ever read.',
-    rating: 1,
+    rating: 5,
     genre: 3,
     amazon_id: '0553283685'
   }

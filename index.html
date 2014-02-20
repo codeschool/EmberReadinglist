@@ -15,28 +15,39 @@
     </div>
   </script>
 
-  <script type="text/x-handlebars" data-template-name="book">
+
+  <script type="text/x-handlebars" data-template-name="index">
     <ol class="breadcrumb">
-      <li>{{#link-to 'books'}}Books{{/link-to}}</li>
-      <li class='active'>{{title}}</li>
+      <li class='active'>Books</li>
     </ol>
 
-    {{book-details class='row' book=this}}
-  </script>
-
-  <script type="text/x-handlebars" data-template-name="books">
     <div class='row'>
       <div class='col-sm-8'>
-        <ul class='list-unstyled'>
-          {{#each books}}
-            {{book-details tag='li' class='row' book=this}}
-          {{/each}}
-        </ul>
+        {{render 'books' books}}
       </div>
       <div class='col-sm-4'>
         {{render 'genres' genres}}
       </div>
     </div>
+  </script>
+
+  <script type="text/x-handlebars" data-template-name="books">
+    <ul class='list-unstyled'>
+      {{#each}}
+        {{book-details tag='li' class='row' book=this}}
+      {{else}}
+        <li>These are no matching books.</li>
+      {{/each}}
+    </ul>
+  </script>
+
+  <script type="text/x-handlebars" data-template-name="book">
+    <ol class="breadcrumb">
+      <li>{{#link-to 'index'}}Books{{/link-to}}</li>
+      <li class='active'>{{title}}</li>
+    </ol>
+
+    {{book-details class='row' book=this}}
   </script>
 
   <script type='text/x-handlebars' data-template-name='genres'>
@@ -50,19 +61,13 @@
 
   <script type='text/x-handlebars' data-template-name='genre'>
     <ol class="breadcrumb">
-      <li>{{#link-to 'books'}}Books{{/link-to}}</li>
+      <li>{{#link-to 'index'}}Books{{/link-to}}</li>
       <li class='active'>{{genre.name}}</li>
     </ol>
 
     <div class='row'>
       <div class='col-sm-8'>
-        <ul class='list-unstyled'>
-          {{#each genre.books}}
-            {{book-details tag='li' class='row' book=this}}
-          {{else}}
-            <li>There are no books in this genre.</li>
-          {{/each}}
-        </ul>
+        {{render 'books' genre.books}}
       </div>
       <div class='col-sm-4'>
         {{render 'genres' genres}}
