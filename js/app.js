@@ -52,6 +52,14 @@ App.GenresController = Ember.ArrayController.extend({
   sortProperties: ['name']
 })
 
+
+App.BookDetailsComponent = Ember.Component.extend({
+  classNameBindings: ['ratingClass'],
+  ratingClass: function() {
+    return "rating-" + this.get('controller.book.rating');
+  }.property('rating')
+});
+
 App.ApplicationAdapter = DS.FixtureAdapter.extend({
   // latency: 2000
 });
@@ -76,30 +84,30 @@ App.Book = DS.Model.extend({
 App.Book.FIXTURES = [
   {
     id: 1,
-    title: 'I, Robot',
-    author: 'Isaac Asimov',
-    review: 'My review',
-    rating: 5,
-    genre: 1,
-    amazon_id: '0553294385'
-  },
-  {
-    id: 2,
     title: 'Mindstorms',
     author: 'Seymour A. Papert',
-    review: 'Amazing',
+    review: 'Although this book focuses on the cognitive advantages to having children use technology from an early age, it is also an in depth look at how people can learn for themseves. As someone who was often distracted and bored at times during school, Mindstorms highlights some of the reasoning behind that feeling and what we can do as teachers to help minimize it.',
     rating: 5,
     genre: 3,
     amazon_id: '0465046746'
   },
   {
-    id: 3,
+    id: 2,
     title: 'Hyperion',
     author: 'Dan Simmons',
-    review: 'Probably my favorite science fiction book (and series) I\'ve ever read.',
+    review: "Probably my favorite science fiction book (and series) I've ever read. Hyperion is written in a style similar to The Canterbury Tales, in which a series of stories are told by the main characters. Each story is a gem in itself, but alude to the larger storyline. The scope of the story is ambitious - spanning time, planets religion and love.",
     rating: 5,
-    genre: 3,
+    genre: 1,
     amazon_id: '0553283685'
+  },
+  {
+    id: 3,
+    title: "Jony Ive: The Genius Behind Apple's Greatest Products",
+    author: 'Leander Kahney',
+    review: "Even though I respect Ive, I felt this biography only hit skin deep. It went over all the major events in his life, his passion for design, awards he achieved -- but that's really it. I dont't feel I know him anymore than before reading this.",
+    rating: 2,
+    genre: 3,
+    amazon_id: '159184617X'
   }
 ];
 
@@ -112,7 +120,7 @@ App.Genre.FIXTURES = [
   {
     id: 1,
     name: 'Science Fiction',
-    books: [1,3]
+    books: [2]
   },
   {
     id: 2,
@@ -121,6 +129,6 @@ App.Genre.FIXTURES = [
   {
     id: 3,
     name: 'Non-Fiction',
-    books: [2]
+    books: [1,3]
   }
 ];

@@ -15,7 +15,6 @@
     </div>
   </script>
 
-
   <script type="text/x-handlebars" data-template-name="index">
     <ol class="breadcrumb">
       <li class='active'>Books</li>
@@ -80,14 +79,12 @@
       <a {{bind-attr href='book.url'}} target='_blank'>
         <img {{bind-attr src='book.image'}} />
       </a>
-      <br/><br/>
-      <p class='text-center'><strong>{{book.rating}}</strong>/5</p>
-      <br/>
+      <p class='text-center rating'><strong>{{book.rating}}</strong>/5</p>
     </div>
 
     <div class='col-sm-9'>
       <h3>{{#link-to 'book' book}}{{book.title}}{{/link-to}}</h3>
-      <span>{{book.author}}</span>
+      <p class='text-muted'><em>Written by {{book.author}}</em></p>
 
       <div>
         <p>{{book.review}}</p>
