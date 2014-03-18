@@ -4,6 +4,9 @@ App.Router.map(function() {
   // this.resource('index', { path: '/' });
   this.resource('book', { path: '/books/:book_id' });
   this.resource('genre', { path: '/genres/:genre_id' });
+  this.resource('reviews', function() {
+    this.route('new');
+  });
 });
 
 App.IndexRoute = Ember.Route.extend({
@@ -22,8 +25,45 @@ App.IndexController = Ember.Controller.extend({});
 
 App.BooksController = Ember.ArrayController.extend({
   sortProperties: ['title']
-})
+});
 
+
+App.ReviewsNewRoute = Ember.Route.extend({
+  model: function() {
+    return Ember.RSVP.hash({
+      genres: this.store.findAll('genre'),
+      book: this.store.createRecord('book')
+    });
+  },
+  setupController: function(controller, model) {
+    controller.set('genres', model.genres);
+    controller.set('model', model.book);
+  },
+  actions: {
+    willTransition: function(transition) {
+      if (this.controller.get('model.isNew') &&
+          confirm("Are you sure you want to abandon progress?")) {
+        this.currentModel.book.destroyRecord();
+      } else {
+        transition.abort();
+      }
+    }
+  }
+});
+App.ReviewsNewController = Ember.Controller.extend({
+  ratings: [5,4,3,2,1],
+  hasTitle: function() {
+    return this.get('model.title') != null;
+  }.property('model.title'),
+  actions: {
+    createReview: function() {
+      var controller = this;
+      this.get('model').save().then(function(book) {
+        controller.transitionToRoute('index');
+      });
+    }
+  }
+});
 
 App.GenreRoute = Ember.Route.extend({
   model: function(params) {
@@ -38,8 +78,7 @@ App.GenreRoute = Ember.Route.extend({
   }
 });
 
-App.GenreController = Ember.Controller.extend({
-});
+App.GenreController = Ember.Controller.extend({ });
 // Show this, then delete it and change the dynamic segment
 // App.BookRoute = Ember.Route.extend({
 //   model: function(params) {
@@ -50,14 +89,14 @@ App.GenreController = Ember.Controller.extend({
 
 App.GenresController = Ember.ArrayController.extend({
   sortProperties: ['name']
-})
+});
 
 
 App.BookDetailsComponent = Ember.Component.extend({
   classNameBindings: ['ratingClass'],
   ratingClass: function() {
-    return "rating-" + this.get('controller.book.rating');
-  }.property('rating')
+    return "rating-" + this.get('book.rating');
+  }.property('book.rating')
 });
 
 App.ApplicationAdapter = DS.FixtureAdapter.extend({
@@ -69,7 +108,6 @@ App.Book = DS.Model.extend({
   author: DS.attr(),
   review: DS.attr(),
   rating: DS.attr('number'),
-  genre: DS.attr(),
   amazon_id: DS.attr(),
   genre: DS.belongsTo('genre', {async: true}),
 

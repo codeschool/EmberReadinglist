@@ -12,6 +12,12 @@
       <h1>Reading List</h1>
 
       {{outlet}}
+
+      <hr/>
+      <div class='row'>
+        <p class='pull-left'><a href='http://codeschool.com'>By Code School<a></p>
+        <p class='pull-right'>{{#link-to 'reviews.new'}}New Review{{/link-to}}</p>
+      </div>
     </div>
   </script>
 
@@ -92,6 +98,64 @@
 
       <span>{{#link-to 'genre' book.genre.id class='label label-primary'}}{{book.genre.name}}{{/link-to}}</span>
     </div>
+  </script>
+
+  <script type="text/x-handlebars" data-template-name="reviews/new">
+    <ol class="breadcrumb">
+      <li>{{#link-to 'index'}}Books{{/link-to}}</li>
+      <li class='active'>New</li>
+    </ol>
+
+    <div class='row'>
+      <form class="form-horizontal" role="form">
+        <div class="form-group">
+          <label for="book_title" class="col-sm-2 control-label">Book Title</label>
+          <div class="col-sm-9">
+            {{input class="form-control" id="book_title" placeholder="Book Title" valueBinding="model.title"}}
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="book_author" class="col-sm-2 control-label">Author</label>
+          <div class="col-sm-9">
+            {{input class="form-control" id="book_author" placeholder="Author" valueBinding="model.author"}}
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="book_amazon_id" class="col-sm-2 control-label">Amazon ID</label>
+          <div class="col-sm-9">
+            {{input class="form-control" id="book_amazon_id" placeholder="Amazon ID" valueBinding="model.amazon_id"}}
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="book_review" class="col-sm-2 control-label">Review</label>
+          <div class="col-sm-9">
+            {{textarea valueBinding="model.review" class="form-control" id="book_review"}}
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="book_rating" class="col-sm-2 control-label">Rating</label>
+          <div class="col-sm-9">
+            {{view Ember.Select content=ratings valueBinding='model.rating' class="form-control" id="book_rating"}}
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="book_genre" class="col-sm-2 control-label">Genre</label>
+          <div class="col-sm-9">
+            {{view Ember.Select content=genres optionLabelPath="content.name" valueBinding="model.genre" class="form-control" id="book_genre"}}
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-default" {{action 'createReview'}}>Save Review</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    {{#if hasTitle}}
+      <h3>Preview</h3>
+      {{book-details class='row' book=model}}
+    {{/if}}
   </script>
 
   <script src="js/libs/jquery-1.10.2.js"></script>
