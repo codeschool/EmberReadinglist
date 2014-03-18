@@ -41,11 +41,14 @@ App.ReviewsNewRoute = Ember.Route.extend({
   },
   actions: {
     willTransition: function(transition) {
-      if (this.controller.get('model.isNew') &&
-          confirm("Are you sure you want to abandon progress?")) {
-        this.currentModel.book.destroyRecord();
-      } else {
-        transition.abort();
+      if (this.controller.get('model.isNew')) {
+        if(confirm("Are you sure you want to abandon progress?")) {
+          // They want to leave the page and abort progress
+          this.currentModel.book.destroyRecord();
+        } else {
+          // They don't want to leave the page
+          transition.abort();
+        }
       }
     }
   }
