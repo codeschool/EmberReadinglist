@@ -3,7 +3,7 @@ var App = Ember.Application.create();
 App.Router.map(function() {
   // this.resource('index', { path: '/' });
   this.resource('book', { path: '/books/:book_id' });
-  this.resource('genre', { path: '/genre/:genre_id' });
+  this.resource('genre', { path: '/genres/:genre_id' });
 });
 
 App.IndexRoute = Ember.Route.extend({
