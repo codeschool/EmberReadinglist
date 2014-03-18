@@ -1,9 +1,9 @@
 var App = Ember.Application.create();
 
 App.Router.map(function() {
-  // this.resource('index', { path: '/' });
+  // this.route('index', { path: '/' });
   this.resource('book', { path: '/books/:book_id' });
-  this.resource('genre', { path: '/genres/:genre_id' });
+  this.resource('genre', { path: '/genre/:genre_id' });
 });
 
 App.IndexRoute = Ember.Route.extend({
@@ -22,7 +22,7 @@ App.IndexController = Ember.Controller.extend({});
 
 App.BooksController = Ember.ArrayController.extend({
   sortProperties: ['title']
-})
+});
 
 
 App.GenreRoute = Ember.Route.extend({
@@ -60,16 +60,17 @@ App.BookDetailsComponent = Ember.Component.extend({
   }.property('rating')
 });
 
-App.ApplicationAdapter = DS.FixtureAdapter.extend({
-  // latency: 2000
-});
+//App.ApplicationAdapter = DS.RESTAdapter.extend({});
+
+// App.ApplicationAdapter = DS.FixtureAdapter.extend({
+//   // latency: 2000
+// });
 
 App.Book = DS.Model.extend({
   title: DS.attr(),
   author: DS.attr(),
   review: DS.attr(),
   rating: DS.attr('number'),
-  genre: DS.attr(),
   amazon_id: DS.attr(),
   genre: DS.belongsTo('genre', {async: true}),
 
@@ -81,54 +82,54 @@ App.Book = DS.Model.extend({
   }.property('amazon_id')
 });
 
-App.Book.FIXTURES = [
-  {
-    id: 1,
-    title: 'Mindstorms',
-    author: 'Seymour A. Papert',
-    review: 'Although this book focuses on the cognitive advantages to having children use technology from an early age, it is also an in depth look at how people can learn for themseves. As someone who was often distracted and bored at times during school, Mindstorms highlights some of the reasoning behind that feeling and what we can do as teachers to help minimize it.',
-    rating: 5,
-    genre: 3,
-    amazon_id: '0465046746'
-  },
-  {
-    id: 2,
-    title: 'Hyperion',
-    author: 'Dan Simmons',
-    review: "Probably my favorite science fiction book (and series) I've ever read. Hyperion is written in a style similar to The Canterbury Tales, in which a series of stories are told by the main characters. Each story is a gem in itself, but alude to the larger storyline. The scope of the story is ambitious - spanning time, planets religion and love.",
-    rating: 5,
-    genre: 1,
-    amazon_id: '0553283685'
-  },
-  {
-    id: 3,
-    title: "Jony Ive: The Genius Behind Apple's Greatest Products",
-    author: 'Leander Kahney',
-    review: "Even though I respect Ive, I felt this biography only hit skin deep. It went over all the major events in his life, his passion for design, awards he achieved -- but that's really it. I dont't feel I know him anymore than before reading this.",
-    rating: 2,
-    genre: 3,
-    amazon_id: '159184617X'
-  }
-];
+// App.Book.FIXTURES = [
+//   {
+//     id: 1,
+//     title: 'Mindstorms',
+//     author: 'Seymour A. Papert',
+//     review: 'Although this book focuses on the cognitive advantages to having children use technology from an early age, it is also an in depth look at how people can learn for themseves. As someone who was often distracted and bored at times during school, Mindstorms highlights some of the reasoning behind that feeling and what we can do as teachers to help minimize it.',
+//     rating: 5,
+//     genre: 3,
+//     amazon_id: '0465046746'
+//   },
+//   {
+//     id: 2,
+//     title: 'Hyperion',
+//     author: 'Dan Simmons',
+//     review: "Probably my favorite science fiction book (and series) I've ever read. Hyperion is written in a style similar to The Canterbury Tales, in which a series of stories are told by the main characters. Each story is a gem in itself, but alude to the larger storyline. The scope of the story is ambitious - spanning time, planets religion and love.",
+//     rating: 5,
+//     genre: 1,
+//     amazon_id: '0553283685'
+//   },
+//   {
+//     id: 3,
+//     title: "Jony Ive: The Genius Behind Apple's Greatest Products",
+//     author: 'Leander Kahney',
+//     review: "Even though I respect Ive, I felt this biography only hit skin deep. It went over all the major events in his life, his passion for design, awards he achieved -- but that's really it. I dont't feel I know him anymore than before reading this.",
+//     rating: 2,
+//     genre: 3,
+//     amazon_id: '159184617X'
+//   }
+// ];
 
 App.Genre = DS.Model.extend({
   name: DS.attr(),
   books: DS.hasMany('book', {async: true})
 });
 
-App.Genre.FIXTURES = [
-  {
-    id: 1,
-    name: 'Science Fiction',
-    books: [2]
-  },
-  {
-    id: 2,
-    name: 'Fiction'
-  },
-  {
-    id: 3,
-    name: 'Non-Fiction',
-    books: [1,3]
-  }
-];
+// App.Genre.FIXTURES = [
+//   {
+//     id: 1,
+//     name: 'Science Fiction',
+//     books: [2]
+//   },
+//   {
+//     id: 2,
+//     name: 'Fiction'
+//   },
+//   {
+//     id: 3,
+//     name: 'Non-Fiction',
+//     books: [1,3]
+//   }
+// ];
